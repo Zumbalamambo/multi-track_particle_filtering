@@ -12,7 +12,7 @@ I began learning of filtering methods through Udacity's free course **_Artificia
  
 #### A Multi-track Particle Filter 
  
-Below is an outline of the SIR Particle Filter found in Chapter 12 along with my additions and modifications to track multiple objects. The bullets in black are from the original implementation in the book. The green sub-bullets are my modifications, and the blue bullets are my additions made to track multiple objects moving with non linear motion.
+Below is an outline of the SIR Particle Filter found in Chapter 12 along with my additions and modifications to track multiple objects. The bullets in black are from the original implementation in the book. The green sub-bullets are my modifications, and the blue bullets are my additions made to track multiple objects moving with non linear motion.  
 
 <p><img src="images/outline.png" /></p>
  
@@ -20,7 +20,7 @@ The file **testPF_3objs.py** is the implementation of the algorithm described ab
 
 The image below is the accumulated output of the test with particle clouds drawn at each iteration.  
 
-p><img src="images/paths.png" /></p>  
+<p><img src="images/paths.png" /></p>  
 
 To render the particles, I set the alpha value low so that only the dense center of the cloud appears as dark red. These are easily seen when we look at the closeup image below. The outlying particles are too dim to be seen.  
 
@@ -29,3 +29,5 @@ To render the particles, I set the alpha value low so that only the dense center
 Next is a closeup of the track with four sequential spurious detections.
 
 <p><img src="images/closeup_spurious.png" /></p>  
+
+In conclusion, this first version of a multi-object particle filter tracker seems to be reliable. I can now begin increasing the complexity of the scenarios to see where it breaks, in order to learn how to make it suit these new requirements. I will not be able to upload any proprietary input data here, but I might upload more complex synthetic tests and show the results, so please check back later.  
