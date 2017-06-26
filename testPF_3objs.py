@@ -38,22 +38,18 @@ n_possible_targets = 6
 particles_list = []
 weights_list = []
 
-pcolors = ['lightblue', 'limegreen', 'gold']
+pcolors = ['mediumblue', 'limegreen', 'gold']
 
 
 # ITERATE THROUGH THE INPUT FRAMES, DETECTING & P.F. TRACKING
 for ifn in range(139):
     print('frame:', ifn)
-    frame = np.zeros([rows, cols])
-    if ifn not in [50,70, 72, 76]:
-        frame[(locs1[ifn][0], locs1[ifn][1])] = 1.0
-        frame[(locs2[ifn][0], locs2[ifn][1])] = 1.0
-        frame[(locs3[ifn][0], locs3[ifn][1])] = 1.0
-    else:
-        frame[(locs2[ifn][0], locs1[ifn][1])] = 1.0
-        frame[(locs1[ifn][0], locs2[ifn][1])] = 1.0
-        frame[(locs3[ifn][0], locs3[ifn][1])] = 1.0        
-
+    frame = np.zeros([rows, cols])      
+    
+    # make some of the inputs "spurrious" to test robustness of method
+    for isp in [20,21,22,23]:
+        locs1[isp] = np.array([80,90])
+    
     dets = np.array([locs1[ifn], locs2[ifn], locs3[ifn]])
     
     # create particles and weights
@@ -113,15 +109,16 @@ for ifn in range(139):
         
                 if plot_particles:
                    plt.scatter(particles[:, 0], particles[:, 1],
-                               color='r', marker=',', s=1, alpha=0.05)
+                               color='r', marker=',', s=1, alpha=0.1)#0.05)
                 plt1 = plt.scatter(robot_pos[0], robot_pos[1], marker='+',
-                                 color='b', s=80, lw=1)
+                                 color='w', s=80, lw=1)
                 plt2 = plt.scatter(mu[0], mu[1], marker=',', s=6, color=pcolors[pidx])
 
+    frameNumb = str(ifn).zfill(4)
     #accept = custom_plots.show_img_return_input(frame, str(ifn), cm='gray', ask=False)
-    custom_plots.write_img(frame, str(ifn), './output') 
+    #custom_plots.write_img(frame, frameNumb, './output') 
     dets_prev = dets
     
-# plt.legend([plt1, plt2], ['Actual', 'PF'], loc=1, numpoints=1)
-# print('final position error, variance:\n\t', mu, var)
-# plt.show()
+plt.legend([plt1, plt2], ['Actual', 'PF'], loc=1, numpoints=1)
+print('final position error, variance:\n\t', mu, var)
+plt.show()
