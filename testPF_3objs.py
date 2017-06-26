@@ -38,14 +38,14 @@ n_possible_targets = 6
 particles_list = []
 weights_list = []
 
-pcolors = ['turquoise', 'limegreen', 'gold']
+pcolors = ['lightblue', 'limegreen', 'gold']
 
 
 # ITERATE THROUGH THE INPUT FRAMES, DETECTING & P.F. TRACKING
 for ifn in range(139):
     print('frame:', ifn)
     frame = np.zeros([rows, cols])
-    if ifn not in [50,70]:
+    if ifn not in [50,70, 72, 76]:
         frame[(locs1[ifn][0], locs1[ifn][1])] = 1.0
         frame[(locs2[ifn][0], locs2[ifn][1])] = 1.0
         frame[(locs3[ifn][0], locs3[ifn][1])] = 1.0
@@ -55,8 +55,6 @@ for ifn in range(139):
         frame[(locs3[ifn][0], locs3[ifn][1])] = 1.0        
 
     dets = np.array([locs1[ifn], locs2[ifn], locs3[ifn]])
-    #accept = custom_plots.show_img_return_input(frame, str(ifn), cm='gray', ask=False)
-    #custom_plots.write_img(frame, str(ifn), './output')
     
     # create particles and weights
     for _ in range(len(dets)):
@@ -93,7 +91,7 @@ for ifn in range(139):
                 heading = angle_between(robot_pos_prev, robot_pos)
                 speed = np.linalg.norm(robot_pos - robot_pos_prev)
                 particles = particles_list[pidx]
-                weights = weights_list[pidx]            
+                weights = weights_list[pidx]                  
         
                 # distance from robot to each landmark
                 zs = (norm(landmarks - robot_pos, axis=1) +
@@ -111,24 +109,19 @@ for ifn in range(139):
                     indexes = systematic_resample(weights)
                     resample_from_index(particles, weights, indexes)
         
-                mu, var = estimate(particles, weights)
-                
-                if np.max(var) > 0.006:
-                    print('recalculating...')
-                    mu_proj = np.add(robot_pos, (speed*np.cos(heading),speed*np.sin(heading)))
-                    proj_x = np.hstack((mu_proj, heading))
-                    particles = create_gaussian_particles(proj_x, std=(5, 5, heading), N=N)
-                particles_list[cidx] = particles
+                mu, var = estimate(particles, weights)               
         
                 if plot_particles:
                    plt.scatter(particles[:, 0], particles[:, 1],
                                color='r', marker=',', s=1, alpha=0.05)
                 plt1 = plt.scatter(robot_pos[0], robot_pos[1], marker='+',
                                  color='b', s=80, lw=1)
-                plt2 = plt.scatter(mu[0], mu[1], marker=',', s=4, color=pcolors[pidx])
+                plt2 = plt.scatter(mu[0], mu[1], marker=',', s=6, color=pcolors[pidx])
 
+    #accept = custom_plots.show_img_return_input(frame, str(ifn), cm='gray', ask=False)
+    custom_plots.write_img(frame, str(ifn), './output') 
     dets_prev = dets
     
-plt.legend([plt1, plt2], ['Actual', 'PF'], loc=1, numpoints=1)
-print('final position error, variance:\n\t', mu, var)
-plt.show()
+# plt.legend([plt1, plt2], ['Actual', 'PF'], loc=1, numpoints=1)
+# print('final position error, variance:\n\t', mu, var)
+# plt.show()
