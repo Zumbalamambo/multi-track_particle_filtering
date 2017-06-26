@@ -46,7 +46,7 @@ for ifn in range(139):
     print('frame:', ifn)
     frame = np.zeros([rows, cols])      
     
-    # make some of the inputs "spurrious" to test robustness of method
+    # make some of the inputs "spurious" to test robustness of method
     for isp in [20,21,22,23]:
         locs1[isp] = np.array([80,90])
     
