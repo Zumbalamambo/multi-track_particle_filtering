@@ -1,5 +1,7 @@
 ## **Multi-Object Tracking with Particle Filters**
-*Tracking multiple objects with systematic re-sampling particle filtering*
+*Tracking multiple objects with systematic re-sampling particle filtering*  
+**Requirements: Python 3, Numpy, Matplotlib, FilterPy**  
+
 
 <p><img src="images/tracking.gif" alt="foo"title="title" /></p>
 
